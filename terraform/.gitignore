@@ -1,1 +1,3 @@
-*.pdf   - ignore all files with extension PDF
+*.csv
+for_moved/
+test.txt
