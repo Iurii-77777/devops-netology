@@ -1,3 +1,4 @@
-*.csv
+*.a
 for_moved/
-test.txt
+docs/*.txt
+!docs/test.txt
