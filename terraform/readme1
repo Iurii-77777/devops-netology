@@ -1,5 +1,30 @@
-In file gitignore:
+# Игнорировать все файлы в каталоге .terraform, не зависимо от количества подкаталогов 
+# (например в блок попадут файлы test/.terraform/readme.md или react/rush/.terraform/test.txt)
+**/.terraform/*
 
-1. Ignor all file with extension CSV
-2. Ignor folder 'for_moved'
-3. Ignor file test.txt
+# Игнорировать все файлы с расширением .tfstate , а также файлы с любым назнавние и расширением, но с условием, что в середине файла будет прописано .tfstate.
+*.tfstate
+*.tfstate.*
+
+# Игнорировать лог файл crash.log
+crash.log
+
+# Игнорировать файлы с расширением *.tfvars (так как в таких файлах есть "конфидициальные" данные)
+*.tfvars
+
+# Игнорировать файлы override.tf и override.tf.json, а также все файлы имя которых заканчивается на _override.tf и _override.tf.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# В этом примере файл example_override.tf выводиться из под действия прошлого правила и игнорироваться не будет
+#
+# !example_override.tf
+
+# В этом примере будут игнорироваться все файлы в имени которых есть слово tfplan
+# example: *tfplan*
+
+# Игнорировать файлы с параметрами конфигурации .terraformrc и terraform.rc
+.terraformrc
+terraform.rc
