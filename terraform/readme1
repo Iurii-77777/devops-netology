@@ -1,1 +1,5 @@
-geekbrain/  -  ignore all file in directory geekbrain 
+In file gitignore:
+
+1. Ignor all file with extension CSV
+2. Ignor folder 'for_moved'
+3. Ignor file test.txt
