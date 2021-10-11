@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/devops-netology" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/hashicorp/terraform" vcs="Git" />
   </component>
 </project>
