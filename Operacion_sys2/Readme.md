@@ -37,6 +37,7 @@
 ######            ***└─1362 /usr/local/bin/node_exporter***        
 #### root@vagrant:~# sudo systemctl enable node_exporter
 #### root@vagrant:# curl 'localhost:9100/metrics'  #(_проверяем что метрики отдаются_)
+## **Устанавливаем Prometheus:**
 #### root@vagrant:~# sudo useradd --no-create-home --shell /bin/false prometheus
 #### root@vagrant:~# wget https://github.com/prometheus/prometheus/releases/download/v2.30.3/prometheus-2.30.3.linux-amd64.tar.gz
 #### root@vagrant:~# tar -xvzf prometheus-2.30.3.linux-amd64.tar.gz
@@ -71,14 +72,14 @@
 #### root@vagrant:~# sudo chown prometheus:prometheus /var/lib/prometheus
 #### root@vagrant:~# vim /etc/prometheus/prometheus.yml
 ***
-###### ***Добавляем в файл prometheus.yml***
+## **Добавляем параметры в файл prometheus.yml**
 ###### ***- job_name: "node_localhost"***
 ######    ***static_configs:***
 ######     ***- targets: ["localhost:9100"]***
 ***
 #### root@vagrant:~# vim /etc/systemd/system/prometheus.service
 ***
-###### ***Создаем файл prometheus.service***
+## **Создаем файл prometheus.service**
 ###### ***[Unit]***
 ###### ***Description=Prometheus***
 ###### ***Wants=network-online.target***
@@ -109,4 +110,17 @@
 ######              ***└─1470 /usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib>***   
 #### root@vagrant:~# sudo systemctl enable prometheus
 #### root@vagrant:~# curl 'localhost:9090/metrics' #(_Проверяем, что Prometheus отдает свои собственные метрики_)
+***
+***
+## **Далее проверяем перезапуск сервиса node_explorer**
+#### root@vagrant:~# ps -e | grep node_exporter
+######   1362 ?        00:00:24 node_exporter
+#### root@vagrant:~# systemctl stop node_exporter
+#### root@vagrant:~# ps -e | grep node_exporter
+#### root@vagrant:~# systemctl start node_exporter
+#### root@vagrant:~# ps -e | grep node_exporter
+######   2062 ?        00:00:00 node_exporter
+## **Проверяем назначение переменной**
+#### root@vagrant:~# sudo cat /proc/2062/environ
+###### LANG=en_US.UTF- 8LANGUAGE=en_US:PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/binHOME=/home/node_exporterLOGNAME=node_exporterUSER=node_exporterINVOCATION_ID=eb4f97840d51430885e917272f4aa731JOURNAL_STREAM=9:37476 
 # 2.
