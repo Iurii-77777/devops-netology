@@ -126,7 +126,7 @@
 # 2.
 ## **CPU:**
 #### root@vagrant:~# curl 'localhost:9100/metrics' | grep cpu
-go_memstats_gc_cpu_fraction
+###### go_memstats_gc_cpu_fraction
 ###### node_cpu_guest_seconds_total
 ###### node_cpu_seconds_total
 ###### node_memory_Percpu_bytes
