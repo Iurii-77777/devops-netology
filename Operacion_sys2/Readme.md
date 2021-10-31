@@ -124,3 +124,38 @@
 #### root@vagrant:~# sudo cat /proc/2062/environ
 ###### LANG=en_US.UTF- 8LANGUAGE=en_US:PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/binHOME=/home/node_exporterLOGNAME=node_exporterUSER=node_exporterINVOCATION_ID=eb4f97840d51430885e917272f4aa731JOURNAL_STREAM=9:37476 
 # 2.
+## **CPU:**
+#### root@vagrant:~# curl 'localhost:9100/metrics' | grep cpu
+go_memstats_gc_cpu_fraction
+###### node_cpu_guest_seconds_total
+###### node_cpu_seconds_total
+###### node_memory_Percpu_bytes
+###### node_pressure_cpu_waiting_seconds_total
+###### node_schedstat_running_seconds_total
+###### node_schedstat_timeslices_total
+###### node_schedstat_waiting_seconds_total
+###### node_scrape_collector_duration_seconds
+###### node_scrape_collector_success
+###### node_softnet_dropped_total
+###### node_softnet_processed_total
+###### node_softnet_times_squeezed_total
+###### process_cpu_seconds_total
+## **Memory:**
+#### root@vagrant:~# curl 'localhost:9100/metrics' | grep memory
+###### node_memory_Active_anon_bytes
+###### node_memory_Active_bytes
+###### node_memory_Active_file_bytes
+###### node_memory_Cached_bytes #(и так далее)
+## **Disk:**
+#### root@vagrant:~# curl 'localhost:9100/metrics' | grep disk
+###### node_disk_io_time_seconds_total{device="dm-0"} 50.368
+###### node_disk_read_bytes_total{device="dm-0"} 3.25788672e+08
+###### node_disk_written_bytes_total{device="dm-0"} 1.09955072e+09 #(и так далее)
+## **Memory:**
+#### root@vagrant:~# curl 'localhost:9100/metrics' | grep network
+###### node_network_info
+###### node_network_mtu_bytes{device="eth0"} #(и так далее)
+# 3.
+
+
+
