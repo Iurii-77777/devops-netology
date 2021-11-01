@@ -156,6 +156,32 @@
 ###### node_network_info
 ###### node_network_mtu_bytes{device="eth0"} #(и так далее)
 # 3.
-
-
-
+## **Настройки vagrantfile:**
+***
+###### Vagrant.configure("2") do |config|
+###### 	config.vm.box = "bento/ubuntu-20.04"
+###### 	config.vm.network "forwarded_port", guest: 19999, host: 19999
+###### 	config.vm.provider "virtualbox" do |vb|
+###### 		vb.memory = "2048"
+######   		vb.cpus = "2"
+###### 	end
+######  end
+***
+## **Теперь могу войти в web-панель netdata на хостовой машине через googlechrome по адресу http://localhost:19999/#menu_system_submenu_cpu;theme=slate**
+## **Видно метрики которые указывал в задании №2. Отображение метрик более легко читаемо, таблицы и графики зрительно легко воспринимаются**
+# 4.
+## **С помощью команды dmesg мы видим, что ОС осознают что загружена на виртуальной машине. Если правильно грепнуть, то можем увидеть это в логах.**
+#### vagrant@vagrant:~$ dmesg | grep virtual
+###### [    0.002115] CPU MTRRs all blank - virtualized system.
+###### [    0.073176] Booting paravirtualized kernel on KVM
+###### [    3.103783] systemd[1]: Detected virtualization oracle.
+# 5.
+## **Есть "системное ограничение", задаваемое через sysctl, на лимит количества открытых дескрипторов файла:**
+#### vagrant@vagrant:~$ /sbin/sysctl -n fs.nr_open
+###### 1048576
+## **Следующее место задания ограничений, на этот раз постоянных — это /etc/security/limits.conf и каталог /etc/security/limits.d/, ограничение называется nofile. Там задаются ограничения на отдельных пользователей или группы, применяемые на всю сессию данного пользователя, или всех пользователей определенной группы.**
+## **Макс.предел ОС можно посмотреть так :**
+#### vagrant@vagrant:~$ cat /proc/sys/fs/file-max
+###### 9223372036854775807
+# 6.
+####
