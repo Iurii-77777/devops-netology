@@ -184,4 +184,34 @@
 #### vagrant@vagrant:~$ cat /proc/sys/fs/file-max
 ###### 9223372036854775807
 # 6.
-####
+## **Запускаем команду в основном терминале:**
+#### root@vagrant:~# ps aux
+###### USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+###### root           1  0.0  0.5 101868 11420 ?        Ss   10:54   0:00 /sbin/init
+###### root           2  0.0  0.0      0     0 ?        S    10:54   0:00 [kthreadd]
+###### root           3  0.0  0.0      0     0 ?        I<   10:54   0:00 [rcu_gp]
+###### root           4  0.0  0.0      0     0 ?        I<   10:54   0:00 [rcu_par_gp]
+###### root           6  0.0  0.0      0     0 ?        I<   10:54   0:00 [kworker/0:0H-kblockd]
+###### root           9  0.0  0.0      0     0 ?        I<   10:54   0:00 [mm_percpu_wq]
+###### root          10  0.0  0.0      0     0 ?        S    10:54   0:00 [ksoftirqd/0]
+###### root          11  0.0  0.0      0     0 ?        I    10:54   0:01 [rcu_sched]
+###### и т.д. последний pid 9038
+## **Создаём изолированныей namespace в дополнительном терминале и запускаем команду sleep:**
+#### root@vagrant:/home/vagrant# unshare -f --pid --mount-proc /bin/bash
+#### root@vagrant:/home/vagrant# ps aux
+###### USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+###### root           1  0.0  0.1   9836  3932 pts/2    S    13:46   0:00 /bin/bash
+###### root           8  0.0  0.1  11492  3304 pts/2    R+   13:46   0:00 ps aux
+#### root@vagrant:/home/vagrant# sleep 1h
+## **Теперь из основного терминала смотрим на запущённые команды в изолированном namespace**
+###### root        9078  0.0  0.2   9836  4076 pts/2    Ss   13:46   0:00 /bin/bash
+###### root        9085  0.0  0.0   8080   592 pts/2    S    13:46   0:00 unshare -f --pid --mount-proc /bin/bash
+###### root        9086  0.0  0.1   9836  3932 pts/2    S+   13:46   0:00 /bin/bash
+#### root@vagrant:~# nsenter --target 9086 --pid --mount
+#### root@vagrant:/# ps aux
+###### USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+###### root           1  0.0  0.1   9836  3996 pts/2    S    13:46   0:00 /bin/bash
+###### root           9  0.0  0.0   8076   528 pts/2    S+   13:47   0:00 sleep 1h
+###### root          10  0.0  0.1   9836  3896 pts/1    S    13:49   0:00 -bash
+###### root          19  0.0  0.1  11492  3296 pts/1    R+   13:49   0:00 ps aux
+# 7.
