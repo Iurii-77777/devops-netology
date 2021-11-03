@@ -125,7 +125,6 @@
 #### root@vagrant:~# sudo cat /proc/2062/environ
 ###### LANG=en_US.UTF- 8LANGUAGE=en_US:PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/binHOME=/home/node_exporterLOGNAME=node_exporterUSER=node_exporterINVOCATION_ID=eb4f97840d51430885e917272f4aa731JOURNAL_STREAM=9:37476
 ***
-***
 # 1.1.
 ## Дополнительные опции в службу передать можно например с помощью этих опций:
 #### Для службы node_exporter с помощью изменения файла /etc/systemd/system/node_exporter.service:
@@ -153,16 +152,16 @@
 ###### [Service]
 ###### User=prometheus
 ###### Group=prometheus
-#### ExecStart=/usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/ --web.console.templates=/etc/prometheus/consoles --web.console.libraries=/etc/prometheus/console_libraries***
+#### ***ExecStart=/usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/ --web.console.templates=/etc/prometheus/consoles --web.console.libraries=/etc/prometheus/console_libraries***
 ###### [Install]
 ###### WantedBy=default.target
 ***
 #### Также возможно использовать какието настройки до запуска ExecStart= , например с помощью параметра ExecStartPre= можно подготовить нужный файл .conf и потом указать его в параметрах запуска службы ExecStart= . Можно назначать переменные и использовать в параматрах запуска службы таким образом (например):
 ###### [Unit]_
-MY_PATH=/opt/my_enter_service
-MY_USER=Iurii
+###### MY_PATH=/opt/my_enter_service
+###### MY_USER=Iurii
+###### [Service]
 ###### ExecStart=/bin/bash -c "${MY_PATH} -u ${MY_USER} -p 12345"
-
 # 2.
 ## **CPU:**
 #### root@vagrant:~# curl 'localhost:9100/metrics' | grep cpu
