@@ -150,4 +150,32 @@
 ######   swap_1 vgvagrant -wi-ao---- 980.00m
 ######   lvol0  volgr_1   -wi-a----- 100.00m
 # 11.
+#### root@vagrant:~# mkfs.ext4 /dev/volgr_1/lvol0
+###### mke2fs 1.45.5 (07-Jan-2020)
+###### Creating filesystem with 25600 4k blocks and 25600 inodes
 ###### 
+###### Allocating group tables: done
+###### Writing inode tables: done
+###### Creating journal (1024 blocks): done
+###### Writing superblocks and filesystem accounting information: done
+# 12.
+#### root@vagrant:~# mkdir /tmp/new
+#### root@vagrant:~# mount /dev/volgr_1/lvol0 /tmp/new
+# 13.
+#### root@vagrant:~# wget https://mirror.yandex.ru/ubuntu/ls-lR.gz -O /tmp/new/test.gz
+###### --2021-11-06 10:36:55--  https://mirror.yandex.ru/ubuntu/ls-lR.gz
+###### Resolving mirror.yandex.ru (mirror.yandex.ru)... 213.180.204.183, 2a02:6b8::183
+###### Connecting to mirror.yandex.ru (mirror.yandex.ru)|213.180.204.183|:443... connected.
+###### HTTP request sent, awaiting response... 200 OK
+###### Length: 22271889 (21M) [application/octet-stream]
+###### Saving to: ‘/tmp/new/test.gz’
+###### 
+###### /tmp/new/test.gz              100%[=================================================>]  21.24M  2.61MB/s    in 8.5s
+###### 
+###### 2021-11-06 10:37:03 (2.50 MB/s) - ‘/tmp/new/test.gz’ saved [22271889/22271889]
+###### 
+#### root@vagrant:~# ls -l /tmp/new
+###### total 21768
+###### drwx------ 2 root root    16384 Nov  6 10:31 lost+found
+###### -rw-r--r-- 1 root root 22271889 Nov  6 07:06 test.gz
+# 14.
