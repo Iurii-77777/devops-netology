@@ -179,3 +179,98 @@
 ###### drwx------ 2 root root    16384 Nov  6 10:31 lost+found
 ###### -rw-r--r-- 1 root root 22271889 Nov  6 07:06 test.gz
 # 14.
+#### root@vagrant:~# lsblk
+###### NAME                 MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+###### sda                    8:0    0   64G  0 disk
+###### ├─sda1                 8:1    0  512M  0 part  /boot/efi
+###### ├─sda2                 8:2    0    1K  0 part
+###### └─sda5                 8:5    0 63.5G  0 part
+######   ├─vgvagrant-root   253:0    0 62.6G  0 lvm   /
+######   └─vgvagrant-swap_1 253:1    0  980M  0 lvm   [SWAP]
+###### sdb                    8:16   0  2.5G  0 disk
+###### ├─sdb1                 8:17   0    2G  0 part
+###### │ └─md1                9:1    0    2G  0 raid1
+###### └─sdb2                 8:18   0  511M  0 part
+######   └─md0                9:0    0  510M  0 raid1
+######     └─volgr_1-lvol0  253:2    0  100M  0 lvm   /tmp/new
+###### sdc                    8:32   0  2.5G  0 disk
+###### ├─sdc1                 8:33   0    2G  0 part
+###### │ └─md1                9:1    0    2G  0 raid1
+###### └─sdc2                 8:34   0  511M  0 part
+######   └─md0                9:0    0  510M  0 raid1
+######     └─volgr_1-lvol0  253:2    0  100M  0 lvm   /tmp/new
+# 15.
+#### root@vagrant:~# gzip -t /tmp/new/test.gz && echo $?
+###### 0
+# 16.
+#### root@vagrant:~# pvmove /dev/md0
+######   /dev/md0: Moved: 16.00%
+######   /dev/md0: Moved: 100.00%
+#### root@vagrant:~# lsblk
+###### NAME                 MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
+###### sda                    8:0    0   64G  0 disk
+###### ├─sda1                 8:1    0  512M  0 part  /boot/efi
+###### ├─sda2                 8:2    0    1K  0 part
+###### └─sda5                 8:5    0 63.5G  0 part
+######   ├─vgvagrant-root   253:0    0 62.6G  0 lvm   /
+######   └─vgvagrant-swap_1 253:1    0  980M  0 lvm   [SWAP]
+###### sdb                    8:16   0  2.5G  0 disk
+###### ├─sdb1                 8:17   0    2G  0 part
+###### │ └─md1                9:1    0    2G  0 raid1
+###### │   └─volgr_1-lvol0  253:2    0  100M  0 lvm   /tmp/new
+###### └─sdb2                 8:18   0  511M  0 part
+######   └─md0                9:0    0  510M  0 raid1
+###### sdc                    8:32   0  2.5G  0 disk
+###### ├─sdc1                 8:33   0    2G  0 part
+###### │ └─md1                9:1    0    2G  0 raid1
+###### │   └─volgr_1-lvol0  253:2    0  100M  0 lvm   /tmp/new
+###### └─sdc2                 8:34   0  511M  0 part
+######   └─md0                9:0    0  510M  0 raid1
+# 17.
+#### root@vagrant:~# mdadm /dev/md1 --fail /dev/sdb1
+###### mdadm: set /dev/sdb1 faulty in /dev/md1
+#### root@vagrant:~# mdadm -D /dev/md1
+###### /dev/md1:
+######            Version : 1.2
+######      Creation Time : Sat Nov  6 10:16:11 2021
+######         Raid Level : raid1
+######         Array Size : 2094080 (2045.00 MiB 2144.34 MB)
+######      Used Dev Size : 2094080 (2045.00 MiB 2144.34 MB)
+######       Raid Devices : 2
+######      Total Devices : 2
+######        Persistence : Superblock is persistent
+###### 
+######        Update Time : Sat Nov  6 10:45:28 2021
+######              State : clean, degraded
+######     Active Devices : 1
+######    Working Devices : 1
+######     Failed Devices : 1
+######      Spare Devices : 0
+###### 
+###### Consistency Policy : resync
+###### 
+######               Name : vagrant:1  (local to host vagrant)
+######               UUID : 4bc347d0:4beec4a3:1f5c7adc:74318be1
+######             Events : 19
+###### 
+######     Number   Major   Minor   RaidDevice State
+######        -       0        0        0      removed
+######        1       8       33        1      active sync   /dev/sdc1
+###### 
+######        0       8       17        -      faulty   /dev/sdb1
+# 18.
+#### root@vagrant:~# dmesg |grep md1
+###### [ 1899.834489] md/raid1:md1: not clean -- starting background reconstruction
+###### [ 1899.834490] md/raid1:md1: active with 2 out of 2 mirrors
+###### [ 1899.834501] md1: detected capacity change from 0 to 2144337920
+###### [ 1899.836614] md: resync of RAID array md1
+###### [ 1910.470050] md: md1: resync done.
+###### [ 3656.060482] md/raid1:md1: Disk failure on sdb1, disabling device.
+######                md/raid1:md1: Operation continuing on 1 devices.
+# 19.
+#### root@vagrant:~# gzip -t /tmp/new/test.gz && echo $?
+###### 0
+# 20.
+## **Пока что destroy не стал делать, если замечаний не будет, тогда destroy-ну =)**
+#### E:\vagrant_demo>vagrant halt
+###### ==> default: Attempting graceful shutdown of VM...
