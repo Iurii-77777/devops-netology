@@ -2,14 +2,14 @@
 
 
 ### **Часть № 1**
-![Screenshot](1_1_.jpg)
+![Screenshot](1_1.jpg)
 ***
 ### **Часть № 2**
 ![Screenshot](1_2.jpg)
 
 ## **Задание 2**
 ### **Часть № 1**
-![Screenshot](2_1_.jpg)
+![Screenshot](2_1.jpg)
 ***
 ### **Часть № 2**
 ![Screenshot](2_2.jpg)
@@ -17,7 +17,7 @@
 ## **Задание 3**
 
 ### **Часть № 1**
-![Screenshot](3_1_.jpg)
+![Screenshot](3_1.jpg)
 ***
 ### **Часть № 2**
 ![Screenshot](3_2.jpg)
@@ -25,7 +25,7 @@
 ## **Задание 4**
 
 ### **Часть № 1**
-![Screenshot](4_1_.jpg)
+![Screenshot](4_1.jpg)
 ***
 ### **Часть № 2**
 ![Screenshot](4_2.jpg)
@@ -52,7 +52,7 @@
 ## **Задание 7**
 
 ### **Часть № 1 Linux**
-![Screenshot](7_1_.jpg)
+![Screenshot](7_1.jpg)
 ***
 ### **Часть № 2 Windows**
 ![Screenshot](7_2.jpg)
