@@ -51,4 +51,8 @@
 
 ## **Задание 7**
 
-![Screenshot](7.jpg)
+### **Часть № 1 Linux**
+![Screenshot](7_1_.jpg)
+***
+### **Часть № 2 Windows**
+![Screenshot](7_2.jpg)
