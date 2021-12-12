@@ -1,6 +1,6 @@
 ## **Задание 1**
 
-![Screenshot](1.jpg)
+![Screenshot](1__.jpg)
 
 ## **Задание 2**
 
