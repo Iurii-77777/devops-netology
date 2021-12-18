@@ -31,11 +31,28 @@ for result in result_os.split('\n'):
 
 ### **Мой скрипт:**
 ```
+#!/usr/bin/env python3
+import os
 
+vvod = input('Введите имя каталога: ')
+bash_command = ["cd ~/"+vvod, "git status 2>&1"]
+result_os = os.popen(' && '.join(bash_command)).read()
+link = ["cd ~/"+vvod, "pwd"]
+link_absolut = os.popen(' && '.join(link)).read()
+prepare_link = link_absolut.replace('\n', '')
+for result in result_os.split('\n'):
+    if result.find('изменено') != -1:
+        prepare_result = result.replace('\tизменено:      ', '')
+        print('\n' + prepare_link + '/' + prepare_result)
+    elif result.find('fatal') != -1:
+        print('\nДанный каталог не является Git репозиторием')
 ```
 ***
-### **Вывод результата:**
+### **Вывод результата (при вводе "не Git" каталога):**
 ```
+Введите имя каталога: >? Видео
+
+Данный каталог не является Git репозиторием
 
 ```
 ## **Задание 4**
