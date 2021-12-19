@@ -59,12 +59,32 @@ for result in result_os.split('\n'):
 
 ### **Мой скрипт:**
 ```
+import socket
+import time as t
 
+site = {'drive.google.com':'0.0.0.0', 'mail.google.com':'0.0.0.0', 'google.com':'0.0.0.0'}
+
+a = 1
+timeout = 3
+i = 0
+while 1 == 1:
+    for host in site:
+        ip = socket.gethostbyname(host)
+        if ip != site[host]:
+            if a == 1 and i != 1:
+                print(' [ERROR] ' + str(host) + ' IP mistmatch: ' + site[host] + ' ' + ip)
+            site[host] = ip
+            i += 1
+        if i >= 50:
+            break
+        t.sleep(timeout)
 ```
 ***
 ### **Вывод результата:**
 ```
-
+ [ERROR] drive.google.com IP mistmatch: 0.0.0.0 173.194.221.194
+ [ERROR] google.com IP mistmatch: 0.0.0.0 74.125.205.100
+ [ERROR] mail.google.com IP mistmatch: 0.0.0.0 173.194.222.18
 ```
 
 
