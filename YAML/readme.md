@@ -68,3 +68,5 @@ drive.google.com: 173.194.221.194
 google.com: 74.125.205.113
 mail.google.com: 173.194.222.17
 ```
+### **Скриншот расположения файлов:**
+![Screenshot](2.jpg)
