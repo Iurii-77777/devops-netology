@@ -179,6 +179,6 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 
 15 * * * * /bin/bash /root/install_cert.sh >/dev/null 2>&1
 ```
-### **Скриншот проверки**
+### **Скриншоты проверки**
 ![Screenshot](6.jpg)
 ![Screenshot](7.jpg)
