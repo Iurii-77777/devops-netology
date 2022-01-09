@@ -151,8 +151,33 @@ systemctl restart nginx.service
 ![Screenshot](4.jpg)
 ![Screenshot](5.jpg)
 ## **Скрипт генерации нового сертификата**
-### **В скрипте не используем sudo, так как он будет запускаться под root. Также определяем переменные для дальнейшей возможносьти запуска через планировщик cronetab**
+### **В скрипте не используем sudo, так как он будет запускаться под root. Также определяем переменные для дальнейшей возможности запуска через планировщик cronetab**
 ```
+#!/bin/bash
 
+export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_TOKEN=s.ACEImTJkFrwVjY8mPmfbHupE
+
+/usr/bin/curl --header "X-Vault-Token: $VAULT_TOKEN" \
+    --request POST \
+    --data '{"common_name": "localhost", "ttl": "720h"}' \
+    $VAULT_ADDR/v1/pki_int/issue/example-dot-com | jq > test.localhost.crt
+
+cat test.localhost.crt | jq -r .data.certificate > localhost.crt
+cat test.localhost.crt | jq -r .data.issuing_ca >> localhost.crt
+cat test.localhost.crt | jq -r .data.private_key > localhost.key
+
+cp localhost.crt /etc/nginx/ssl
+cp localhost.key /etc/nginx/ssl
+
+systemctl restart nginx.service
 ```
 ## **Crontab работает**
+### **Устанавливаем и создаём задание в Crontab (sudo crontabe -e). Для примера используем настройки, чтобы сертификат генерировался каждую 10 минуту каждого часа и проверяем**
+```
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+
+10 * * * * /bin/bash /root/install_cert.sh >/dev/null 2>&1
+```
+### **Скриншот проверки**
+![Screenshot](6.jpg)
