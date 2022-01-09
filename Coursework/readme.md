@@ -112,7 +112,7 @@ curl --header "X-Vault-Token: $VAULT_TOKEN" \
     --data @payload-role.json \
     $VAULT_ADDR/v1/pki_int/roles/example-dot-com
 ```
-### **Запрашиваем сертификат и преобразуем полученные данные в промежуточный сертификат, полученный по запросу сертификат и приватный ключ**
+### **Запрашиваем сертификат и преобразуем полученные данные в промежуточный сертификат + полученный по запросу сертификат и приватный ключ**
 ``` 
 curl --header "X-Vault-Token: $VAULT_TOKEN" \
     --request POST \
@@ -124,9 +124,35 @@ cat test.localhost.crt | jq -r .data.issuing_ca >> localhost.crt
 cat test.localhost.crt | jq -r .data.private_key > localhost.key
 ```
 ## **Процесс установки и настройки сервера nginx**
+### **После установки nginx, создаём файл виртуального хоста (см. настройки)**
+```
+root@iurii7777-VirtualBox:/etc/nginx/conf.d# cat configure.conf 
+server {
+    listen              443 ssl;
+    server_name         localhost;
+    ssl_certificate     /etc/nginx/ssl/localhost.crt;
+    ssl_certificate_key /etc/nginx/ssl/localhost.key;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+}
+```
+### **Затем создаём каталог /etc/nginx/ssl/ и копируем в него ранее полученные сертификаты сертификаты, перезапускаем сервис**
+```
+sudo cp localhost.crt /etc/nginx/ssl
+sudo cp localhost.key /etc/nginx/ssl
 
+systemctl restart nginx.service
+```
 ## **Страница сервера nginx в браузере хоста не содержит предупреждений**
-
+### **Пробрасываем порт с виртуальной машины на хост**
+![Screenshot](2.jpg)
+### **Устанавливаем корневой сертификат CA_localhost на хостовую машину и проводим тестирование. Ошибок нет**
+![Screenshot](3.jpg)
+![Screenshot](4.jpg)
+![Screenshot](5.jpg)
 ## **Скрипт генерации нового сертификата**
+### **В скрипте не используем sudo, так как он будет запускаться под root. Также определяем переменные для дальнейшей возможносьти запуска через планировщик cronetab**
+```
 
+```
 ## **Crontab работает**
