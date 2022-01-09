@@ -151,12 +151,17 @@ systemctl restart nginx.service
 ![Screenshot](4.jpg)
 ![Screenshot](5.jpg)
 ## **Скрипт генерации нового сертификата**
-### **В скрипте не используем sudo, так как он будет запускаться под root. Также определяем переменные для дальнейшей возможности запуска через планировщик cronetab**
+### **Выносим конфидециальные данные в отдельный файл и настраиваем права доступа к файлу**
+```
+vim pass.txt
+chmod 600 pass.txt
+```
+### **В скрипте не используем sudo, так как он будет запускаться под root. Также определяем переменные для дальнейшей возможности запуска через планировщик cronetab.**
 ```
 #!/bin/bash
 
 export VAULT_ADDR=http://127.0.0.1:8200
-export VAULT_TOKEN=
+export VAULT_TOKEN=$(<pass.txt)
 
 /usr/bin/curl --header "X-Vault-Token: $VAULT_TOKEN" \
     --request POST \
