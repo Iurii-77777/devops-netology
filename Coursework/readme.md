@@ -1,7 +1,7 @@
 ## **Процесс установки и настройки ufw**
 ![Screenshot](1.jpg)
 ## **Процесс установки и выпуска сертификата с помощью hashicorp vault**
-### **Выносим конфидециальные данные в отдельный файл и настраиваем права доступа к файлу. Также назначаем переменные. Запускаем сервер hashicorp vault**
+#### **Выносим конфидециальные данные в отдельный файл и настраиваем права доступа к файлу. Также назначаем переменные. Запускаем сервер hashicorp vault**
 ```
 vim vault.token        # в этот файл записываем токен vault
 chmod 600 vault.token
@@ -9,7 +9,7 @@ export VAULT_TOKEN=$(<vault.token)
 export VAULT_ADDR=http://127.0.0.1:8200
 vault server -dev -dev-root-token-id $VAULT_TOKEN
 ```
-### **Генерируем корневой (название CA_localhost) сертификат**
+#### **Генерируем корневой (название CA_localhost) сертификат**
 ```
 curl --header "X-Vault-Token: $VAULT_TOKEN" \
    --request POST \
