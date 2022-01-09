@@ -1,9 +1,11 @@
 ## **Процесс установки и настройки ufw**
 ![Screenshot](1.jpg)
 ## **Процесс установки и выпуска сертификата с помощью hashicorp vault**
-### **Запускаем сервер hashicorp vault, назначаем переменные**
+### **Выносим конфидециальные данные в отдельный файл и настраиваем права доступа к файлу. Также назначаем переменные. Запускаем сервер hashicorp vault**
 ```
-export VAULT_TOKEN=s.ACEImTJkFrwVjY8mPmfbHupE
+vim pass.txt       # в этот файл записываем токен vault
+chmod 600 pass.txt
+export VAULT_TOKEN=$(<pass.txt)
 export VAULT_ADDR=http://127.0.0.1:8200
 vault server -dev -dev-root-token-id $VAULT_TOKEN
 ```
@@ -151,11 +153,6 @@ systemctl restart nginx.service
 ![Screenshot](4.jpg)
 ![Screenshot](5.jpg)
 ## **Скрипт генерации нового сертификата**
-### **Выносим конфидециальные данные в отдельный файл и настраиваем права доступа к файлу**
-```
-vim pass.txt
-chmod 600 pass.txt
-```
 ### **В скрипте не используем sudo, так как он будет запускаться под root. Также определяем переменные для дальнейшей возможности запуска через планировщик cronetab.**
 ```
 #!/bin/bash
