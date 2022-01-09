@@ -1,7 +1,7 @@
-# **Процесс установки и настройки ufw**
+# **1. Процесс установки и настройки ufw**
 ![Screenshot](1.jpg)
-# **Процесс установки и выпуска сертификата с помощью hashicorp vault**
-#### **Выносим конфидециальные данные в отдельный файл и настраиваем права доступа к файлу. Также назначаем переменные. Запускаем сервер hashicorp vault**
+# **2. Процесс установки и выпуска сертификата с помощью hashicorp vault**
+#### **2.1 Выносим конфидециальные данные в отдельный файл и настраиваем права доступа к файлу. Также назначаем переменные. Запускаем сервер hashicorp vault**
 ```
 vim vault.token        # в этот файл записываем токен vault
 chmod 600 vault.token
@@ -9,7 +9,7 @@ export VAULT_TOKEN=$(<vault.token)
 export VAULT_ADDR=http://127.0.0.1:8200
 vault server -dev -dev-root-token-id $VAULT_TOKEN
 ```
-#### **Генерируем корневой (название CA_localhost) сертификат**
+#### **2.2 Генерируем корневой (название CA_localhost) сертификат**
 ```
 curl --header "X-Vault-Token: $VAULT_TOKEN" \
    --request POST \
@@ -46,7 +46,7 @@ curl --header "X-Vault-Token: $VAULT_TOKEN" \
    --data @payload-url.json \
    $VAULT_ADDR/v1/pki/config/urls
 ```  
-### **Генерируем промежуточный сертификат (название localhost SPB for Netology)**
+#### **2.3 Генерируем промежуточный сертификат (название localhost SPB for Netology)**
 ``` 
 curl --header "X-Vault-Token: $VAULT_TOKEN" \
    --request POST \
@@ -99,7 +99,7 @@ curl --header "X-Vault-Token: $VAULT_TOKEN" \
      --data @payload-signed.json \
      $VAULT_ADDR/v1/pki_int/intermediate/set-signed
 ``` 
-### **Создаём роль для настройки параметров и контроля сертификатов**
+#### **2.4 Создаём роль для настройки параметров и контроля сертификатов**
 ``` 
 tee payload-role.json <<EOF
 {
@@ -114,7 +114,7 @@ curl --header "X-Vault-Token: $VAULT_TOKEN" \
     --data @payload-role.json \
     $VAULT_ADDR/v1/pki_int/roles/example-dot-com
 ```
-### **Запрашиваем сертификат и преобразуем полученные данные в промежуточный сертификат + полученный по запросу сертификат и приватный ключ**
+#### **2.5 Запрашиваем сертификат и преобразуем полученные данные в промежуточный сертификат + полученный по запросу сертификат и приватный ключ**
 ``` 
 curl --header "X-Vault-Token: $VAULT_TOKEN" \
     --request POST \
@@ -125,8 +125,8 @@ cat test.localhost.crt | jq -r .data.certificate > localhost.crt
 cat test.localhost.crt | jq -r .data.issuing_ca >> localhost.crt
 cat test.localhost.crt | jq -r .data.private_key > localhost.key
 ```
-## **Процесс установки и настройки сервера nginx**
-### **После установки nginx, создаём файл виртуального хоста (см. настройки)**
+# **3. Процесс установки и настройки сервера nginx**
+#### **3.1 После установки nginx, создаём файл виртуального хоста (см. настройки)**
 ```
 root@iurii7777-VirtualBox:/etc/nginx/conf.d# cat configure.conf 
 server {
@@ -138,24 +138,24 @@ server {
     ssl_ciphers         HIGH:!aNULL:!MD5;
 }
 ```
-### **Затем создаём каталог /etc/nginx/ssl/ и копируем в него ранее полученные сертификаты сертификаты, перезапускаем сервис**
+#### **3.2 Затем создаём каталог /etc/nginx/ssl/ и копируем в него ранее полученные сертификаты сертификаты, перезапускаем сервис**
 ```
 sudo cp localhost.crt /etc/nginx/ssl
 sudo cp localhost.key /etc/nginx/ssl
 
 systemctl restart nginx.service
 ```
-## **Страница сервера nginx в браузере хоста не содержит предупреждений**
-### **Пробрасываем порт с виртуальной машины на хост**
+# **4. Страница сервера nginx в браузере хоста не содержит предупреждений**
+#### **4.1 Пробрасываем порт с виртуальной машины на хост**
 ![Screenshot](2.jpg)
-### **Устанавливаем корневой сертификат CA_localhost на хостовую машину и проводим тестирование. Ошибок нет**
+#### **4.2 Устанавливаем корневой сертификат CA_localhost на хостовую машину и проводим тестирование. Ошибок нет**
 ![Screenshot](3.jpg)
 ![Screenshot](4.jpg)
 ![Screenshot](5.jpg)
-## **Скрипт генерации нового сертификата**
-### **Проверяем что службы в статусе ACTIVE. Переводим службы nginx и vault в состояние ENABLED.**
+# **5. Скрипт генерации нового сертификата**
+#### **5.1 Проверяем что службы в статусе ACTIVE. Переводим службы nginx и vault в состояние ENABLED.**
 ![Screenshot](8.jpg)
-### **В скрипте не используем sudo, так как он будет запускаться под root. Также определяем переменные для дальнейшей возможности запуска через планировщик cronetab.**
+#### **5.2 В скрипте не используем sudo, так как он будет запускаться под root. Также определяем переменные для дальнейшей возможности запуска через планировщик cronetab.**
 ```
 #!/bin/bash
 
@@ -176,8 +176,8 @@ cp localhost.key /etc/nginx/ssl
 
 systemctl restart nginx.service
 ```
-## **Crontab работает**
-### **Устанавливаем и создаём задание в Crontab (sudo crontabe -e). Для примера используем настройки, чтобы сертификат генерировался каждую 15 минуту каждого часа и проверяем**
+# **6. Crontab работает**
+#### **6.1 Устанавливаем и создаём задание в Crontab (sudo crontabe -e). Для примера используем настройки, чтобы сертификат генерировался каждую 15 минуту каждого часа и проверяем**
 ```
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 
