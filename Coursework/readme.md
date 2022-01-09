@@ -156,7 +156,7 @@ systemctl restart nginx.service
 #!/bin/bash
 
 export VAULT_ADDR=http://127.0.0.1:8200
-export VAULT_TOKEN=s.ACEImTJkFrwVjY8mPmfbHupE
+export VAULT_TOKEN=
 
 /usr/bin/curl --header "X-Vault-Token: $VAULT_TOKEN" \
     --request POST \
