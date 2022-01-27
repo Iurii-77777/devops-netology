@@ -57,6 +57,7 @@ ansible 2.9.6
 ## **4. Установка VM с Docker:**
 ```
 iurii-devops@Host-SPB:~$ cd vagrant_demo/
+iurii-devops@Host-SPB:~/vagrant_demo$ vim Vagrantfile 
 iurii-devops@Host-SPB:~/vagrant_demo$ vagrant up
 
 Bringing machine 'server1.netology' up with 'virtualbox' provider...
