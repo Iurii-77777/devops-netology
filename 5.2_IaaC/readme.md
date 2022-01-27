@@ -20,6 +20,8 @@ VB:
 iurii-devops@Host-SPB:~$ sudo apt update
 iurii-devops@Host-SPB:~$ sudo apt install virtualbox
 iurii-devops@Host-SPB:~$ sudo apt install virtualbox-ext-pack -y
+iurii-devops@Host-SPB:~/ansible$ vboxmanage --version
+6.1.26_Ubuntur145957
 
 Vagrant:
 iurii-devops@Host-SPB:~$ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -33,6 +35,8 @@ the comments in the Vagrantfile as well as documentation on
 `vagrantup.com` for more information on using Vagrant.
 iurii-devops@Host-SPB:~/vagrant_demo$ ls
 Vagrantfile
+iurii-devops@Host-SPB:~/ansible$ vagrant --version
+Vagrant 2.2.19
 
 Ansible:
 iurii-devops@Host-SPB:~/vagrant_demo$ sudo apt install ansible
@@ -41,6 +45,13 @@ iurii-devops@Host-SPB:~/cd ansible/
 iurii-devops@Host-SPB:~/ansible$ vim provision.yml
 iurii-devops@Host-SPB:~/ansible$ vim inventory
 iurii-devops@Host-SPB:~/ansible$ sudo vim etc/ansible/ansible.cfg
+iurii-devops@Host-SPB:~/ansible$ ansible --version
+ansible 2.9.6
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/home/iurii-devops/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 3.8.10 (default, Nov 26 2021, 20:14:08) [GCC 9.3.0]
 ```
 
 ## **4. Установка VM с Docker:**
