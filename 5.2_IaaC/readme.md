@@ -21,6 +21,20 @@ iurii-devops@Host-SPB:~$ sudo apt update
 iurii-devops@Host-SPB:~$ sudo apt install virtualbox
 iurii-devops@Host-SPB:~$ sudo apt install virtualbox-ext-pack -y
 
+Vagrant:
+iurii-devops@Host-SPB:~$ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+iurii-devops@Host-SPB:~$ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+iurii-devops@Host-SPB:~$ sudo apt-get update && sudo apt-get install vagrant
+iurii-devops@Host-SPB:~$ mkdir vagrant_demo && cd vagrant_demo
+iurii-devops@Host-SPB:~/vagrant_demo$ vagrant init ubuntu/trusty64
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+iurii-devops@Host-SPB:~/vagrant_demo$ ls
+Vagrantfile
+
+Ansible:
 
 ```
 ## **4. Установка VM с Docker:**
