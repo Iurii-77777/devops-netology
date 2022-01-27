@@ -16,6 +16,11 @@ push - т.к. выполняется под контролем админист�
 ```
 ## **3. Вывод команд установленных версий каждой из программ:**
 ```
+VB:
+iurii-devops@Host-SPB:~$ sudo apt update
+iurii-devops@Host-SPB:~$ sudo apt install virtualbox
+iurii-devops@Host-SPB:~$ sudo apt install virtualbox-ext-pack -y
+
 
 ```
 ## **4. Установка VM с Docker:**
