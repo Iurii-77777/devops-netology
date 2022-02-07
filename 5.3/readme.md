@@ -62,5 +62,5 @@ root@Host-SPB:~# docker exec -it centos.1 /bin/bash                 #подкл�
 ```
 ## **Задача 4. Соберите Docker образ с Ansible, загрузите на Docker Hub и пришлите ссылку вместе с остальными ответами к задачам.**
 ```
-
+https://hub.docker.com/repository/docker/iurii99999/netology2022
 ```
