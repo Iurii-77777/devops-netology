@@ -18,7 +18,7 @@
 ## **Задача 3. Создать ваш первый, готовый к боевой эксплуатации кластер мониторинга, состоящий из стека микросервисов.**
 ![Screenshot](2.jpg)
 ## **Задача 4. Выполнить на лидере Docker Swarm кластера команду и дать письменное описание её функционала, что она делает и зачем она нужна:**
-#### https://docs.docker.com/engine/swarm/swarm_manager_locking/ docker swarm update --autolock=true
+#### docker swarm update --autolock=true
 ```
 
 ```
