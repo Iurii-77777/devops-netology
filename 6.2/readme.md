@@ -64,5 +64,7 @@ update  clients set booking = 5 where id = 3;
 ## **Задача 6.**
 #### Создайте бэкап БД test_db и поместите его в volume, предназначенный для бэкапов. Восстановите БД test_db в новом контейнере. Приведите список операций, который вы применяли для бэкапа данных и восстановления.
 ```
-
+sudo docker exec -t pg-docker pg_dump -U postgres test_db -f /var/lib/postgresql/data/dump_test.sql
+sudo docker exec -i pg-docker2 pg_dump -U postgres -f /var/lib/postgresql/data/dump_test.sql
 ```
+![Screenshot](6.jpg)
