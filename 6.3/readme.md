@@ -109,9 +109,28 @@ Threads: 2  Questions: 8  Slow queries: 0  Opens: 119  Flush tables: 3  Open tab
 ```
 #### Подключитесь к восстановленной БД и получите список таблиц из этой БД.
 ```
+sudo docker exec -i mysql-docker /usr/bin/mysql -u root --password=netology test_db < test_dump.sql
+
+iurii-devops@Host-SPB:~$ sudo docker exec -it mysql-docker mysql --password=netology
+mysql> use test_db
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| orders            |
++-------------------+
+1 row in set (0.00 sec)
 ```
 #### Приведите в ответе количество записей с price > 300.
 ```
+mysql> select count(*) from orders where price >300;
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.01 sec)
 ```
 ## **Задача 2.**
 #### Создайте пользователя test в БД c паролем test-pass используя установленные параметры. 
