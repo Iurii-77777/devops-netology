@@ -165,18 +165,100 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE USER='test';
 ## **Задача 3.**
 #### Установите профилирование SET profiling = 1. Изучите вывод профилирования команд SHOW PROFILES;.
 ```
+mysql> SELECT TABLE_NAME,ENGINE,ROW_FORMAT,TABLE_ROWS,DATA_LENGTH,INDEX_LENGTH FROM information_schema.TABLES WHERE table_name = 'orders' and  TABLE_SCHEMA = 'test_db' ORDER BY ENGINE asc;
++------------+--------+------------+------------+-------------+--------------+
+| TABLE_NAME | ENGINE | ROW_FORMAT | TABLE_ROWS | DATA_LENGTH | INDEX_LENGTH |
++------------+--------+------------+------------+-------------+--------------+
+| orders     | InnoDB | Dynamic    |          5 |       16384 |            0 |
++------------+--------+------------+------------+-------------+--------------+
+1 row in set (0.01 sec)
+
+mysql> ALTER TABLE orders ENGINE = MyISAM;
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE orders ENGINE = InnoDB;
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
 ```
 #### Исследуйте, какой engine используется в таблице БД test_db.
 ```
+InnoDB
 ```
 #### Измените engine и приведите время выполнения и запрос на изменения из профайлера.
 ```
+mysql> ALTER TABLE orders ENGINE = MyISAM;
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE orders ENGINE = InnoDB;
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
 ```
 ## **Задача 4.**
 #### Изучите файл my.cnf в директории /etc/mysql.
 ```
+iurii-devops@Host-SPB:~$ sudo docker exec -i 96a07261b076 /bin/bash
+cd /etc/mysql/      
+cat my.cnf	
+# Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+#
+# The MySQL  Server configuration file.
+#
+# For explanations see
+# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
+[mysqld]
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql
+secure-file-priv= NULL
+
+# Custom config should go here
+!includedir /etc/mysql/conf.d/
 ```
 #### Измените его согласно ТЗ (движок InnoDB).
 ```
+iurii-devops@Host-SPB:~$ vim my.cnf
+iurii-devops@Host-SPB:~$ sudo docker cp my.cnf 96a07261b076:/etc/mysql/my.cnf
+iurii-devops@Host-SPB:~$ sudo docker exec -i 96a07261b076 /bin/bash
+cat /etc/mysql/my.cnf
+[mysqld]
+pid-file        = /var/run/mysqld/mysqld.pid
+socket          = /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql
+secure-file-priv= NULL
+
+#Set IO Speed
+# 0 - скорость
+# 1 - сохранность
+# 2 - универсальный параметр
+innodb_flush_log_at_trx_commit = 0 
+
+#Set compression
+# Barracuda - формат файла с сжатием
+innodb_file_format=Barracuda
+
+#Set buffer
+innodb_log_buffer_size	= 1M
+
+#Set Cache size
+key_buffer_size = 700М
+
+#Set log size
+max_binlog_size	= 100M
 ```
-![Screenshot](1.jpg)
