@@ -135,16 +135,47 @@ mysql> select count(*) from orders where price >300;
 ## **Задача 2.**
 #### Создайте пользователя test в БД c паролем test-pass используя установленные параметры. 
 ```
+mysql> CREATE USER 'test'@'localhost' IDENTIFIED BY 'test-pass';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> ALTER USER 'test'@'localhost' ATTRIBUTE '{"fname":"James", "lname":"Pretty"}';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> ALTER USER 'test'@'localhost' 
+    -> IDENTIFIED BY 'test-pass'
+    -> WITH
+    -> MAX_QUERIES_PER_HOUR 100
+    -> PASSWORD EXPIRE INTERVAL 180 DAY
+    -> FAILED_LOGIN_ATTEMPTS 3 PASSWORD_LOCK_TIME 2;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> GRANT Select ON test_db.orders TO 'test'@'localhost';
+Query OK, 0 rows affected, 1 warning (0.00 sec)
 ```
 #### Используя таблицу INFORMATION_SCHEMA.USER_ATTRIBUTES получите данные по пользователю test
+mysql> SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE USER='test';
+```
++------+-----------+---------------------------------------+
+| USER | HOST      | ATTRIBUTE                             |
++------+-----------+---------------------------------------+
+| test | localhost | {"fname": "James", "lname": "Pretty"} |
++------+-----------+---------------------------------------+
+1 row in set (0.00 sec)
+```
 ## **Задача 3.**
 #### Установите профилирование SET profiling = 1. Изучите вывод профилирования команд SHOW PROFILES;.
+```
+```
 #### Исследуйте, какой engine используется в таблице БД test_db.
+```
+```
 #### Измените engine и приведите время выполнения и запрос на изменения из профайлера.
 ```
 ```
 ## **Задача 4.**
 #### Изучите файл my.cnf в директории /etc/mysql.
+```
+```
 #### Измените его согласно ТЗ (движок InnoDB).
 ```
 ```
