@@ -202,14 +202,29 @@ test_database=# select avg_width from pg_stats where tablename='orders';
 ```
 #### Предложите SQL-транзакцию для проведения данной операции. Можно ли было изначально исключить "ручное" разбиение при проектировании таблицы orders?
 ```
+Необходимо конвектировать существующую таблицу в партиционированную:
 
+test_database=# alter table orders rename to orders_simple;
+ALTER TABLE
+test_database=# create table orders (id integer, title varchar(80), price integer) partition by range(price);
+CREATE TABLE
+test_database=# create table orders_less499 partition of orders for values from (0) to (499);
+CREATE TABLE
+test_database=# create table orders_more499 partition of orders for values from (499) to (999999999);
+CREATE TABLE
+test_database=# insert into orders (id, title, price) select * from orders_simple;
+INSERT 0 8
+test_database=# 
+
+Если бы таблица была секционированной то ручное разбиение не было бы нужно.
 ```
 ## **Задача 4.**
 #### Используя утилиту pg_dump создайте бекап БД test_database.
 ```
-
+root@f7aecfc21276:/var/lib/postgresql/data# pg_dump -U postgres -d test_database >test_database_dump.sql
 ```
 #### Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца title для таблиц test_database?
 ```
-
+Можно добавить команду в бэкап-файл:
+CREATE INDEX ON orders ((lower(title)));
 ```
