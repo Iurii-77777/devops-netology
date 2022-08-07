@@ -158,22 +158,58 @@ root@f7aecfc21276:/#
 ## **Задача 2.**
 #### Используя psql создайте БД test_database. Изучите бэкап БД. Восстановите бэкап БД в test_database. Перейдите в управляющую консоль psql внутри контейнера.
 ```
+postgres=# CREATE DATABASE test_database;
+CREATE DATABASE
+postgres=# \q
 
+iurii-devops@Host-SPB:~$ sudo docker cp test_dump2.sql f7aecfc21276:/var/lib/postgresql/data/
+iurii-devops@Host-SPB:~$ sudo docker exec -it pg1 bash
+
+root@f7aecfc21276:/# cd var
+root@f7aecfc21276:/var# cd lib
+root@f7aecfc21276:/var/lib# cd postgresql/
+root@f7aecfc21276:/var/lib/postgresql# cd data/
+root@f7aecfc21276:/var/lib/postgresql/data# ls
+base	pg_commit_ts  pg_hba.conf    pg_logical    pg_notify	pg_serial     pg_stat	   pg_subtrans	pg_twophase  pg_wal   postgresql.auto.conf  postmaster.opts  test_dump2.sql
+global	pg_dynshmem   pg_ident.conf  pg_multixact  pg_replslot	pg_snapshots  pg_stat_tmp  pg_tblspc	PG_VERSION   pg_xact  postgresql.conf	    postmaster.pid
+root@f7aecfc21276:/var/lib/postgresql/data# psql -U postgres -f ./test_dump2.sql test_database
+
+root@f7aecfc21276:/var/lib/postgresql/data# psql -h localhost -p 5432 -U postgres -W
+Password: 
+psql (13.7 (Debian 13.7-1.pgdg110+1))
+Type "help" for help.
+
+postgres=#
 ```
 #### Подключитесь к восстановленной БД и проведите операцию ANALYZE для сбора статистики по таблице. Используя таблицу pg_stats, найдите столбец таблицы orders с наибольшим средним значением размера элементов в байтах. Приведите в ответе команду, которую вы использовали для вычисления и полученный результат.
 ```
+test_database=# ANALYZE VERBOSE public.orders;
+INFO:  analyzing "public.orders"
+INFO:  "orders": scanned 1 of 1 pages, containing 8 live rows and 0 dead rows; 8 rows in sample, 8 estimated total rows
+ANALYZE
+test_database=# select avg_width from pg_stats where tablename='orders';
+ avg_width 
+-----------
+         4
+        16
+         4
+(3 rows)
 ```
 ## **Задача 3.**
 #### Архитектор и администратор БД выяснили, что ваша таблица orders разрослась до невиданных размеров и поиск по ней занимает долгое время. Вам, как успешному выпускнику курсов DevOps в нетологии предложили провести разбиение таблицы на 2 (шардировать на orders_1 - price>499 и orders_2 - price<=499).
 ```
+
 ```
 #### Предложите SQL-транзакцию для проведения данной операции. Можно ли было изначально исключить "ручное" разбиение при проектировании таблицы orders?
 ```
+
 ```
 ## **Задача 4.**
 #### Используя утилиту pg_dump создайте бекап БД test_database.
 ```
+
 ```
 #### Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца title для таблиц test_database?
 ```
+
 ```
