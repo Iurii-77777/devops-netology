@@ -38,6 +38,48 @@ CMD ["/elasticsearch-7.11.1/bin/elasticsearch"]
 ```
 #### Текст elasticsearch.yml:
 ```
+   # ======================== Elasticsearch Configuration =========================
+#
+# NOTE: Elasticsearch comes with reasonable defaults for most settings.
+#       Before you set out to tweak and tune the configuration, make sure you
+#       understand what are you trying to accomplish and the consequences.
+#
+# The primary way of configuring a node is via this file. This template lists
+# the most important settings you may want to configure for a production cluster.
+#
+# Please consult the documentation for further information on configuration options:
+# https://www.elastic.co/guide/en/elasticsearch/reference/index.html
+#
+# ---------------------------------- Cluster -----------------------------------
+#
+# Use a descriptive name for your cluster:
+#
+cluster.name: netology_test
+discovery.type: single-node
+#
+# ------------------------------------ Node ------------------------------------
+#
+# Use a descriptive name for the node:
+#
+#node.name: node-1
+#
+# Add custom attributes to the node:
+#
+#node.attr.rack: r1
+#
+# ----------------------------------- Paths ------------------------------------
+#
+# Path to directory where to store the data (separate multiple locations by comma):
+#
+path.data: /var/lib/data
+#
+# Path to log files:
+#
+path.logs: /var/lib/logs
+
+#Settings REPOSITORY PATH 
+#for Image from YUM (esp)
+#path.repo: /usr/share/elasticsearch/snapshots
 #for Image from TAR (est)
 path.repo: /elasticsearch-7.11.1/snapshots
 #
@@ -90,9 +132,7 @@ discovery.seed_hosts: ["127.0.0.1", "[::1]"]
 #
 # Require explicit names when deleting indices:
 #
-#action.destructive_requires_name: true
-
-"elasticsearch.yml" 96L, 3024C                                                                                                                             
+#action.destructive_requires_name: true                                                                                                                  
 ```
 #### Ссылку на образ в репозитории dockerhub
 ```
@@ -241,6 +281,10 @@ iurii-devops@Host-SPB:~$ curl -X DELETE 'http://localhost:9200/ind-3?pretty'
 ```
 ## **Задача 3.**
 #### Создайте директорию {путь до корневой директории с elasticsearch в образе}/snapshots.
+```
+Директория описана в файле elasticsearch.yml:
+path.repo: /elasticsearch-7.11.1/snapshots
+```
 #### Используя API зарегистрируйте данную директорию как snapshot repository c именем netology_backup.
 #### Приведите в ответе запрос API и результат вызова API для создания репозитория.
 ```
@@ -250,8 +294,6 @@ iurii-devops@Host-SPB:~/elasticsearch$ curl -XPOST localhost:9200/_snapshot/neto
 }
 ```
 #### Создайте индекс test с 0 реплик и 1 шардом и приведите в ответе список индексов.
-#### Создайте snapshot состояния кластера elasticsearch.
-#### Приведите в ответе список файлов в директории со snapshotами.
 ```
 iurii-devops@Host-SPB:~/elasticsearch$ curl -X PUT localhost:9200/test -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
 {"acknowledged":true,"shards_acknowledged":true,"index":"test"}
@@ -282,7 +324,10 @@ iurii-devops@Host-SPB:~/elasticsearch$ curl http://localhost:9200/test?pretty
     }
   }
 }
-
+```
+#### Создайте snapshot состояния кластера elasticsearch.
+#### Приведите в ответе список файлов в директории со snapshotами.
+```
 iurii-devops@Host-SPB:~/elasticsearch$ curl -X PUT localhost:9200/_snapshot/netology_backup/elasticsearch?wait_for_completion=true
 {"snapshot":{"snapshot":"elasticsearch","uuid":"BqwRM7GQRNGouGLffaJy2g","version_id":7110199,"version":"7.11.1","indices":["test"],"data_streams":[],"include_global_state":true,"state":"SUCCESS","start_time":"2022-08-09T18:04:52.228Z","start_time_in_millis":1660068292228,"end_time":"2022-08-09T18:04:52.228Z","end_time_in_millis":1660068292228,"duration_in_millis":0,"failures":[],"shards":{"total":1,"failed":0,"successful":1}}}
 
