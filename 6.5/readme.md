@@ -96,11 +96,30 @@ discovery.seed_hosts: ["127.0.0.1", "[::1]"]
 ```
 #### Ссылку на образ в репозитории dockerhub
 ```
-docker push iuriinetology/for_elastic:latest 
+docker pull iuriinetology/for_elastic:latest 
 ```
 #### Ответ elasticsearch на запрос пути / в json виде
 ```
+iurii-devops@Host-SPB:~/elasticsearch$ sudo docker run --name elasticsearch -p 9200:9200 -p 9300:9300 36089842433b
 
+iurii-devops@Host-SPB:~$ curl localhost:9200
+{
+  "name" : "756d6b1fdc62",
+  "cluster_name" : "netology_test",
+  "cluster_uuid" : "-exO51eZStOeujeuPnBiOg",
+  "version" : {
+    "number" : "7.11.1",
+    "build_flavor" : "default",
+    "build_type" : "tar",
+    "build_hash" : "ff17057114c2199c9c1bbecc727003a907c0db7a",
+    "build_date" : "2021-02-15T13:44:09.394032Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.7.0",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}
 ```
 ## **Задача 2.**
 #### Получите список индексов и их статусов, используя API и приведите в ответе на задание.
