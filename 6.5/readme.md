@@ -244,14 +244,90 @@ iurii-devops@Host-SPB:~$ curl -X DELETE 'http://localhost:9200/ind-3?pretty'
 #### Используя API зарегистрируйте данную директорию как snapshot repository c именем netology_backup.
 #### Приведите в ответе запрос API и результат вызова API для создания репозитория.
 ```
+iurii-devops@Host-SPB:~/elasticsearch$ curl -XPOST localhost:9200/_snapshot/netology_backup?pretty -H 'Content-Type: application/json' -d'{"type": "fs", "settings": { "location":"/elasticsearch-7.11.1/snapshots" }}'
+{
+  "acknowledged" : true
+}
 ```
 #### Создайте индекс test с 0 реплик и 1 шардом и приведите в ответе список индексов.
 #### Создайте snapshot состояния кластера elasticsearch.
 #### Приведите в ответе список файлов в директории со snapshotами.
 ```
+iurii-devops@Host-SPB:~/elasticsearch$ curl -X PUT localhost:9200/test -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"test"}
+
+iurii-devops@Host-SPB:~/elasticsearch$ curl http://localhost:9200/test?pretty
+{
+  "test" : {
+    "aliases" : { },
+    "mappings" : { },
+    "settings" : {
+      "index" : {
+        "routing" : {
+          "allocation" : {
+            "include" : {
+              "_tier_preference" : "data_content"
+            }
+          }
+        },
+        "number_of_shards" : "1",
+        "provided_name" : "test",
+        "creation_date" : "1660068127670",
+        "number_of_replicas" : "0",
+        "uuid" : "3K23au20Thqte8rQw5fDaA",
+        "version" : {
+          "created" : "7110199"
+        }
+      }
+    }
+  }
+}
+
+iurii-devops@Host-SPB:~/elasticsearch$ curl -X PUT localhost:9200/_snapshot/netology_backup/elasticsearch?wait_for_completion=true
+{"snapshot":{"snapshot":"elasticsearch","uuid":"BqwRM7GQRNGouGLffaJy2g","version_id":7110199,"version":"7.11.1","indices":["test"],"data_streams":[],"include_global_state":true,"state":"SUCCESS","start_time":"2022-08-09T18:04:52.228Z","start_time_in_millis":1660068292228,"end_time":"2022-08-09T18:04:52.228Z","end_time_in_millis":1660068292228,"duration_in_millis":0,"failures":[],"shards":{"total":1,"failed":0,"successful":1}}}
+
+iurii-devops@Host-SPB:~/elasticsearch$ sudo docker exec -it 756d6b1fdc62 bash
+[elasticsearch@756d6b1fdc62 /]$ cd elasticsearch-7.11.1
+[elasticsearch@756d6b1fdc62 elasticsearch-7.11.1]$ cd snapshots/
+
+[elasticsearch@756d6b1fdc62 snapshots]$ ll -la
+total 60
+drwxr-xr-x 1 elasticsearch elasticsearch  4096 Aug  9 18:04 .
+drwxr-xr-x 1 elasticsearch elasticsearch  4096 Aug  7 15:37 ..
+-rw-r--r-- 1 elasticsearch elasticsearch   437 Aug  9 18:04 index-0
+-rw-r--r-- 1 elasticsearch elasticsearch     8 Aug  9 18:04 index.latest
+drwxr-xr-x 3 elasticsearch elasticsearch  4096 Aug  9 18:04 indices
+-rw-r--r-- 1 elasticsearch elasticsearch 30977 Aug  9 18:04 meta-BqwRM7GQRNGouGLffaJy2g.dat
+-rw-r--r-- 1 elasticsearch elasticsearch   269 Aug  9 18:04 snap-BqwRM7GQRNGouGLffaJy2g.dat
 ```
 #### Удалите индекс test и создайте индекс test-2. Приведите в ответе список индексов.
+```
+[elasticsearch@756d6b1fdc62 snapshots]$ curl -X DELETE 'http://localhost:9200/test?pretty'
+{
+  "acknowledged" : true
+}
+
+[elasticsearch@756d6b1fdc62 snapshots]$ curl -X PUT localhost:9200/test-2?pretty -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "test-2"
+}
+
+[elasticsearch@756d6b1fdc62 snapshots]$ curl -X GET 'http://localhost:9200/_cat/indices?v' 
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 PjC0NSR1SgK-rgHGfaP-Rw   1   0          0            0       208b           208b
+```
 #### Восстановите состояние кластера elasticsearch из snapshot, созданного ранее.
 #### Приведите в ответе запрос к API восстановления и итоговый список индексов.
 ```
+[elasticsearch@756d6b1fdc62 snapshots]$ curl -X POST localhost:9200/_snapshot/netology_backup/elasticsearch/_restore?pretty -H 'Content-Type: application/json' -d'{"include_global_state":true}'
+{
+  "accepted" : true
+}
+
+[elasticsearch@756d6b1fdc62 snapshots]$ curl -X GET http://localhost:9200/_cat/indices?v
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 PjC0NSR1SgK-rgHGfaP-Rw   1   0          0            0       208b           208b
+green  open   test   VSUWgJHsQrqRDvCCiPxQ7w   1   0          0            0       208b           208b
 ```
