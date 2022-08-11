@@ -28,10 +28,31 @@
 #### Установите терраформ при помощи менеджера пакетов используемого в вашей операционной системе. 
 #### В виде результата этой задачи приложите вывод команды terraform --version
 ```
-
+iurii-devops@Host-SPB:~$ terraform --version
+Terraform v1.1.5
+on linux_amd64
 ```
 ## **Задача 3.**
 #### В виде результата этой задачи приложите вывод --version двух версий терраформа доступных на вашем компьютере или виртуальной машине.
 ```
+iurii-devops@Host-SPB:~$ mkdir terraform2
+iurii-devops@Host-SPB:~$ cd terraform2/
+iurii-devops@Host-SPB:~/terraform2$ wget https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_linux_amd64.zip
+iurii-devops@Host-SPB:~/terraform2$ unzip terraform_1.2.7_linux_amd64.zip 
+Archive:  terraform_1.2.7_linux_amd64.zip
+  inflating: terraform               
+iurii-devops@Host-SPB:~/terraform2$ rm terraform_1.2.7_linux_amd64.zip 
+iurii-devops@Host-SPB:~/terraform2$ sudo ln -s /home/iurii-devops/terraform2/terraform /usr/bin/terraform2
+iurii-devops@Host-SPB:~/terraform2$ sudo chmod ugo+x /usr/bin/terraform2
 
+iurii-devops@Host-SPB:~/terraform2$ terraform2 --version
+Terraform v1.2.7
+on linux_amd64
+iurii-devops@Host-SPB:~/terraform2$ terraform --version
+Terraform v1.1.5
+on linux_amd64
+
+Your version of Terraform is out of date! The latest version
+is 1.2.7. You can update by downloading from https://www.terraform.io/downloads.html
+iurii-devops@Host-SPB:~/terraform2$ 
 ```
