@@ -20,4 +20,5 @@ iurii-devops@Host-SPB:~/terraform_7.2/terraform$ terraform workspace list
 ```
 #### Вывод команды terraform plan для воркспейса test:
 ```
+Приложены файлы в корне текущей папки репозитория - terraform.tfstate и terraform.tfstate.backup
 ```
