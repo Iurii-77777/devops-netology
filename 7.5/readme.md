@@ -1,6 +1,9 @@
 ## **Задача 1.**
 #### Установите golang. 
-![Screenshot](7_5_1_.jpg)
+```
+iurii-devops@Host-SPB:~/goland$ go version
+go version go1.18.5 linux/amd64
+```
 ## **Задача 2.** 
 #### Знакомство с gotour.
 ```
