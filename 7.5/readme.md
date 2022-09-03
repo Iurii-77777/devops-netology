@@ -11,15 +11,11 @@
 #### Содержимое файла скрипта test.go:
 ```
 package main
-
 import "fmt"
-
-
 
  func main() {
    fmt.Print("Введите количество футов: ")
    var input float64
-
    fmt.Scanf("%f", &input)           
    output := input * float64(0.3048) 
    RoundUpOutput := fmt.Sprintf("( %.2f)", output)
@@ -39,7 +35,31 @@ iurii-devops@Host-SPB:~/goland$ go run test.go
 #### Программа № 2. Напишите программу, которая найдет наименьший элемент в любом заданном списке.
 #### Содержимое файла скрипта test2.go:
 ```
+package main
+import "fmt"
 
+  func main() {
+    spis := []int{48,96,86,68,57,82,63,70,37,34,51,32,83,27,19,97,17,3,7,9}
+    current := 0
+    fmt.Println ("Список чисел : ", spis)
+    for i, value := range spis {
+        if (i == 0) {
+           current = value
+        } else {
+            if (value < current){
+                current = value
+            }
+        }
+    }
+    fmt.Println("Минимальное число : ", current)
+    }
+```
+####  Пример запуска:
+```
+iurii-devops@Host-SPB:~/goland$ vim test2.go
+iurii-devops@Host-SPB:~/goland$ go run test2.go 
+Список чисел :  [48 96 86 68 57 82 63 70 37 34 51 32 83 27 19 97 17 3 7 9]
+Минимальное число :  3
 ```
 #### Программа № 3. Напишите программу, которая выводит числа от 1 до 100, которые делятся на 3. 
 #### Содержимое файла скрипта test3.go:
