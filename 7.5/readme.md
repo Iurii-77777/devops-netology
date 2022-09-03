@@ -20,10 +20,10 @@ import "fmt"
    fmt.Print("Введите количество футов: ")
    var input float64
 
-   fmt.Scanf("%f", &input)           // округлим до 2х знаков в строке
-   output := input * float64(0.3048) // точное значение
-   sOutput := fmt.Sprintf("( %.2f)", output)
-   fmt.Println("Данное количество футов в метрах:", sOutput )
+   fmt.Scanf("%f", &input)           
+   output := input * float64(0.3048) 
+   RoundUpOutput := fmt.Sprintf("( %.2f)", output)
+   fmt.Println("Данное количество футов в метрах:", RoundUpOutput )
   }
 ```
 #### Пример запуска:
