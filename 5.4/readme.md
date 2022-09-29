@@ -12,7 +12,7 @@
 Но почему-то данные с node2 не попадают в прометеус node1. Скриншоты прилагаю.
 
 ```
-![Screenshot](4.jpg)
+![1](https://github.com/Iurii-77777/final-work/blob/main/screenshot/01.png)
 ![Screenshot](5.jpg)
 ```
 
